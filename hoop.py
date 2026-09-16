@@ -22,3 +22,7 @@ class Hoop:
         if abs(self.vel) < 0.1:
             self.vel = 0
         self.x += self.vel
+
+    def reset(self):
+        self.x = 100
+        self.y = 550

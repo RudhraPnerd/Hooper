@@ -8,3 +8,6 @@ ball_img_rect = ball.get_rect(center=(400, 300))
 
 hoop = pygame.image.load(cfg.Files.Sprites.HOOP_SPRITE_FILE).convert_alpha()
 hoop = pygame.transform.scale(hoop, (40, 40))
+
+check_circle = pygame.image.load(cfg.Files.Buttons.CHECK_CIRCLE_FILE).convert_alpha()
+check_circle_img_rect = check_circle.get_rect(center=(400, 300))
