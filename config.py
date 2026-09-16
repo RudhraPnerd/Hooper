@@ -6,3 +6,4 @@ class Screen:
 class Files:
     class Sprites:
         BASKETBALL_SPRITE_FILE = 'assets/sprites/basketball.png'
+        HOOP_SPRITE_FILE = 'assets/sprites/hoop.jpeg'
