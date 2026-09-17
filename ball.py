@@ -9,6 +9,6 @@ class Ball:
     def fall(self):
         self.y += self.speed
 
-    def reset(self, screen_width):
-        self.x = random.randint(0, screen_width)
+    def reset(self, screen_width, ball_width=0):
+        self.x = random.randint(0, screen_width - ball_width)
         self.y = 0

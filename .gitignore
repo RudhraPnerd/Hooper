@@ -25,3 +25,9 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Save data
+src/high_score.txt
+
+# License
+LICENSE

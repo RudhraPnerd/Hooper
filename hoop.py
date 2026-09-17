@@ -6,6 +6,8 @@ class Hoop:
         self.max_speed = max_speed
         self.accel = accel
         self.friction = friction
+        self.start_x = x
+        self.start_y = y
 
     def move_left(self):
         self.vel -= self.accel
@@ -24,5 +26,6 @@ class Hoop:
         self.x += self.vel
 
     def reset(self):
-        self.x = 100
-        self.y = 550
+        self.x = self.start_x
+        self.y = self.start_y
+        self.vel = 0
