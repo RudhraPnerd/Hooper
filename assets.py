@@ -23,5 +23,18 @@ play = pygame.image.load(cfg.Files.Buttons.PLAY_FILE).convert_alpha()
 play = pygame.transform.scale(play, (70, 70))
 play_img_rect = play.get_rect(center=(200, 300))
 
+power = pygame.image.load(cfg.Files.Buttons.POWER_FILE).convert_alpha()
+power = pygame.transform.scale(power, (70, 70))
+power_img_rect = power.get_rect(center=(400, 300))
+
+shop = pygame.image.load(cfg.Files.Buttons.SHOP_FILE).convert_alpha()
+shop = pygame.transform.scale(shop, (70, 70))
+shop_img_rect = shop.get_rect(topright=(600, 0))
+
+back = pygame.image.load(cfg.Files.Buttons.BACK_FILE).convert_alpha()
+back = pygame.transform.scale(back, (70, 70))
+back_img_rect = back.get_rect(topleft=(10, 10))
+
 click = pygame.mixer.Sound(cfg.Files.Audio.CLICK_FILE)
 score_sound_effect = pygame.mixer.Sound(cfg.Files.Audio.SCORE_SOUND_EFFECT_FILE)
+game_over = pygame.mixer.Sound(cfg.Files.Audio.GAME_OVER_FILE)

@@ -1,3 +1,5 @@
+import time
+
 import pygame
 import sys
 import assets as ast
@@ -17,6 +19,9 @@ my_hoop = hoop.Hoop(100, cfg.Screen.SCREEN_SIZE[1] - 50, 12, accel=1.5)
 
 font_name, font_size = cfg.Screen.FONT
 my_font = pygame.font.Font(font_name, font_size)
+
+shop_font_name, shop_font_size = cfg.Screen.SHOP_FONT
+shop_font = pygame.font.Font(shop_font_name, shop_font_size)
 
 score = 0
 high_score = sr.read_high_score()
@@ -59,6 +64,11 @@ while running:
                         previous_state = cfg.Screen.States.STATE_GAME_OVER
                         current_state = cfg.Screen.States.STATE_HOME
 
+                    elif ast.power_img_rect.collidepoint(event.pos):
+                        ast.click.play()
+                        time.sleep(1)
+                        running = False
+
             elif current_state == cfg.Screen.States.STATE_HOME:
                 if event.button == 1:
                     if ast.play_img_rect.collidepoint(event.pos):
@@ -67,6 +77,25 @@ while running:
                         my_ball.reset(cfg.Screen.SCREEN_SIZE[0], ast.ball.get_width())
                         my_hoop.reset()
                         previous_state = cfg.Screen.States.STATE_HOME
+                        current_state = cfg.Screen.States.STATE_GAME
+
+                    elif ast.power_img_rect.collidepoint(event.pos):
+                        ast.click.play()
+                        time.sleep(1)
+                        running = False
+
+            elif current_state == cfg.Screen.States.STATE_GAME:
+                if event.button == 1:
+                    if ast.shop_img_rect.collidepoint(event.pos):
+                        ast.click.play()
+                        previous_state = cfg.Screen.States.STATE_GAME
+                        current_state = cfg.Screen.States.STATE_SHOP
+
+            elif current_state == cfg.Screen.States.STATE_SHOP:
+                if event.button == 1:
+                    if ast.back_img_rect.collidepoint(event.pos):
+                        ast.click.play()
+                        previous_state = cfg.Screen.States.STATE_SHOP
                         current_state = cfg.Screen.States.STATE_GAME
 
     if current_state == cfg.Screen.States.STATE_GAME:
@@ -88,6 +117,7 @@ while running:
         my_ball.fall()
 
         if my_ball.y > cfg.Screen.SCREEN_SIZE[1]:
+            ast.game_over.play()
             current_state = cfg.Screen.States.STATE_GAME_OVER
 
         ball_rect = ast.ball.get_rect(topleft=(my_ball.x, my_ball.y))
@@ -111,12 +141,16 @@ while running:
         screen.blit(high_score_text, (20, 60))
         screen.blit(ast.ball, (my_ball.x, my_ball.y))
         screen.blit(ast.hoop, (my_hoop.x, my_hoop.y))
+        screen.blit(ast.shop, ast.shop_img_rect)
 
     elif current_state == cfg.Screen.States.STATE_GAME_OVER:
         menus.draw_game_over(screen, my_font)
 
     elif current_state == cfg.Screen.States.STATE_HOME:
         menus.draw_home(screen, my_font)
+
+    elif current_state == cfg.Screen.States.STATE_SHOP:
+        menus.draw_shop(screen, shop_font, my_font)
 
     pygame.display.flip()
     clock.tick(cfg.Screen.FPS)
