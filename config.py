@@ -2,6 +2,7 @@ class Screen:
     class States:
         STATE_GAME = 'game'
         STATE_GAME_OVER = 'game_over'
+        STATE_HOME = 'home'
 
 
     SCREEN_SIZE = (600, 600)
@@ -16,6 +17,8 @@ class Files:
 
     class Buttons:
         REPLAY_FILE = 'assets/buttons/replay.png'
+        HOME_FILE = 'assets/buttons/home.png'
+        PLAY_FILE = 'assets/buttons/play.png'
 
     class Audio:
         CLICK_FILE = 'assets/audio/click.wav'

@@ -21,7 +21,8 @@ my_font = pygame.font.Font(font_name, font_size)
 score = 0
 high_score = sr.read_high_score()
 
-current_state = cfg.Screen.States.STATE_GAME
+previous_state = cfg.Screen.States.STATE_HOME
+current_state = cfg.Screen.States.STATE_HOME
 
 clock = pygame.time.Clock()
 
@@ -47,6 +48,25 @@ while running:
                         score = 0
                         my_ball.reset(cfg.Screen.SCREEN_SIZE[0], ast.ball.get_width())
                         my_hoop.reset()
+                        previous_state = cfg.Screen.States.STATE_GAME_OVER
+                        current_state = cfg.Screen.States.STATE_GAME
+
+                    elif ast.home_img_rect.collidepoint(event.pos):
+                        ast.click.play()
+                        score = 0
+                        my_ball.reset(cfg.Screen.SCREEN_SIZE[0], ast.ball.get_width())
+                        my_hoop.reset()
+                        previous_state = cfg.Screen.States.STATE_GAME_OVER
+                        current_state = cfg.Screen.States.STATE_HOME
+
+            elif current_state == cfg.Screen.States.STATE_HOME:
+                if event.button == 1:
+                    if ast.play_img_rect.collidepoint(event.pos):
+                        ast.click.play()
+                        score = 0
+                        my_ball.reset(cfg.Screen.SCREEN_SIZE[0], ast.ball.get_width())
+                        my_hoop.reset()
+                        previous_state = cfg.Screen.States.STATE_HOME
                         current_state = cfg.Screen.States.STATE_GAME
 
     if current_state == cfg.Screen.States.STATE_GAME:
@@ -94,6 +114,9 @@ while running:
 
     elif current_state == cfg.Screen.States.STATE_GAME_OVER:
         menus.draw_game_over(screen, my_font)
+
+    elif current_state == cfg.Screen.States.STATE_HOME:
+        menus.draw_home(screen, my_font)
 
     pygame.display.flip()
     clock.tick(cfg.Screen.FPS)
