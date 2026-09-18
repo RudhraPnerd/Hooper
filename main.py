@@ -8,6 +8,8 @@ import ball
 import hoop
 import menus
 import score_reading as sr
+import coins_reading as cr
+import skins as sk
 
 pygame.init()
 
@@ -25,9 +27,13 @@ shop_font = pygame.font.Font(shop_font_name, shop_font_size)
 
 score = 0
 high_score = sr.read_high_score()
+coins = cr.read_coins()
 
 previous_state = cfg.Screen.States.STATE_HOME
 current_state = cfg.Screen.States.STATE_HOME
+
+item_rects = []
+buy_rects = []
 
 clock = pygame.time.Clock()
 
@@ -98,6 +104,25 @@ while running:
                         previous_state = cfg.Screen.States.STATE_SHOP
                         current_state = cfg.Screen.States.STATE_GAME
 
+                    else:
+                        for i, rect in enumerate(item_rects):
+                            if rect.collidepoint(event.pos):
+                                item = menus.SHOP_ITEMS[i]
+                                print(f"Viewing: {item['name']}")
+
+                        for i, rect in enumerate(buy_rects):
+                            if rect.collidepoint(event.pos):
+                                item = menus.SHOP_ITEMS[i]
+                                if coins >= item["cost"]:
+                                    coins -= item["cost"]
+                                    cr.save_coins(coins)
+                                    if item["unlock"] == "red_hoop":
+                                        sk.load_realistic_skin()
+                                    ast.click.play()
+
+                                else:
+                                    pass
+
     if current_state == cfg.Screen.States.STATE_GAME:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
@@ -126,6 +151,8 @@ while running:
         if ball_rect.colliderect(hoop_rect):
             ast.score_sound_effect.play()
             score += 1
+            coins += 1
+            cr.save_coins(coins)
             my_ball.speed += 0.1
             my_ball.reset(cfg.Screen.SCREEN_SIZE[0], ast.ball.get_width())
 
@@ -137,8 +164,10 @@ while running:
 
         score_text = my_font.render(f'Score: {score}', True, (0, 0, 0))
         high_score_text = my_font.render(f'High Score: {high_score}', True, (0, 0, 0))
+        coins_text = my_font.render(f'Coins: {coins}', True, (0, 0, 0))
         screen.blit(score_text, (20, 20))
         screen.blit(high_score_text, (20, 60))
+        screen.blit(coins_text, (20, 100))
         screen.blit(ast.ball, (my_ball.x, my_ball.y))
         screen.blit(ast.hoop, (my_hoop.x, my_hoop.y))
         screen.blit(ast.shop, ast.shop_img_rect)
@@ -150,7 +179,7 @@ while running:
         menus.draw_home(screen, my_font)
 
     elif current_state == cfg.Screen.States.STATE_SHOP:
-        menus.draw_shop(screen, shop_font, my_font)
+        item_rects, buy_rects = menus.draw_shop(screen, shop_font, my_font)
 
     pygame.display.flip()
     clock.tick(cfg.Screen.FPS)

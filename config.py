@@ -14,6 +14,8 @@ class Screen:
 
 class Files:
     class Sprites:
+        class HoopSkins:
+            REALISTIC_FILE = 'assets/sprites/hoop-skins/realistic.jpg'
         BASKETBALL_SPRITE_FILE = 'assets/sprites/basketball.png'
         HOOP_SPRITE_FILE = 'assets/sprites/hoop.jpeg'
 
@@ -29,6 +31,8 @@ class Files:
         CLICK_FILE = 'assets/audio/click.wav'
         SCORE_SOUND_EFFECT_FILE = 'assets/audio/score.wav'
         GAME_OVER_FILE = 'assets/audio/game_over.wav'
+        BROKE_SOUND_EFFECT_FILE = 'assets/audio/broke.wav'
 
 
     HIGH_SCORE_FILE = 'src/high_score.txt'
+    COINS_FILE = 'src/coins.txt'

@@ -2,7 +2,7 @@ import assets as ast
 import pygame
 
 SHOP_ITEMS = [
-    {"name": "Red Hoop", "cost": 50, "unlock": "red_hoop"},
+    {"name": "Red Hoop", "cost": 10, "unlock": "red_hoop"},
     {"name": "Gold Hoop", "cost": 150, "unlock": "gold_hoop"},
 ]
 
@@ -37,27 +37,38 @@ def draw_shop(screen, font, title_font):
     screen.blit(ast.back, ast.back_img_rect)
 
     item_width = 150
-    item_height = 150
+    item_height = 120
+    buy_height = 40
     gap = 30
     start_x = 50
     start_y = 200
 
     item_rects = []
+    buy_rects = []
 
     for i, item in enumerate(SHOP_ITEMS):
         x = start_x + i * (item_width + gap)
         y = start_y
-        rect = pygame.Rect(x, y, item_width, item_height)
-        item_rects.append(rect)
 
-        pygame.draw.rect(screen, (255, 0, 0), rect, border_radius=10)
+        item_rect = pygame.Rect(x, y, item_width, item_height)
+        buy_rect = pygame.Rect(x, y + item_height + 10, item_width, buy_height)
+
+        item_rects.append(item_rect)
+        buy_rects.append(buy_rect)
+
+        pygame.draw.rect(screen, (255, 0, 0), item_rect, border_radius=10)
+        pygame.draw.rect(screen, (0, 200, 0), buy_rect, border_radius=10)
 
         name_text = font.render(item["name"], True, (0, 0, 0))
-        name_rect = name_text.get_rect(center=(rect.centerx, rect.top + 20))
+        name_rect = name_text.get_rect(center=(item_rect.centerx, item_rect.top + 30))
         screen.blit(name_text, name_rect)
 
         cost_text = font.render(f'{item["cost"]}', True, (0, 0, 0))
-        cost_rect = cost_text.get_rect(center=(rect.centerx, rect.bottom - 20))
+        cost_rect = cost_text.get_rect(center=(item_rect.centerx, item_rect.bottom - 20))
         screen.blit(cost_text, cost_rect)
 
-    return item_rects
+        buy_text = font.render('Buy', True, (0, 0, 0))
+        buy_text_rect = buy_text.get_rect(center=buy_rect.center)
+        screen.blit(buy_text, buy_text_rect)
+
+    return item_rects, buy_rects

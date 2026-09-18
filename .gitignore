@@ -28,6 +28,7 @@ Thumbs.db
 
 # Save data
 src/high_score.txt
+src/coins.txt
 
 # License
 LICENSE
