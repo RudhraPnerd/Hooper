@@ -4,6 +4,7 @@ class Screen:
         STATE_GAME_OVER = 'game_over'
         STATE_HOME = 'home'
         STATE_SHOP = 'shop'
+        STATE_BROKE = 'broke'
 
 
     SCREEN_SIZE = (600, 600)
@@ -16,6 +17,7 @@ class Files:
     class Sprites:
         class HoopSkins:
             REALISTIC_FILE = 'assets/sprites/hoop-skins/realistic.jpg'
+
         BASKETBALL_SPRITE_FILE = 'assets/sprites/basketball.png'
         HOOP_SPRITE_FILE = 'assets/sprites/hoop.jpeg'
 
@@ -36,3 +38,4 @@ class Files:
 
     HIGH_SCORE_FILE = 'src/high_score.txt'
     COINS_FILE = 'src/coins.txt'
+    SKIN_FILE = 'src/skin.txt'

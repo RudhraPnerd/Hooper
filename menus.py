@@ -2,7 +2,7 @@ import assets as ast
 import pygame
 
 SHOP_ITEMS = [
-    {"name": "Red Hoop", "cost": 10, "unlock": "red_hoop"},
+    {"name": "Realistic Hoop", "cost": 50, "unlock": "realistic_hoop"},
     {"name": "Gold Hoop", "cost": 150, "unlock": "gold_hoop"},
 ]
 
@@ -72,3 +72,12 @@ def draw_shop(screen, font, title_font):
         screen.blit(buy_text, buy_text_rect)
 
     return item_rects, buy_rects
+
+def draw_broke(screen, font):
+    screen.fill((252, 186, 3))
+
+    message = font.render('Not enough money!', True, (0, 0, 0))
+    message_rect = message.get_rect(center=(screen.get_width() // 2, 100))
+
+    screen.blit(message, message_rect)
+    screen.blit(ast.back, ast.back_img_rect)

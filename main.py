@@ -10,6 +10,7 @@ import menus
 import score_reading as sr
 import coins_reading as cr
 import skins as sk
+import skin_reading as skr
 
 pygame.init()
 
@@ -28,6 +29,7 @@ shop_font = pygame.font.Font(shop_font_name, shop_font_size)
 score = 0
 high_score = sr.read_high_score()
 coins = cr.read_coins()
+skin = skr.read_skin()
 
 previous_state = cfg.Screen.States.STATE_HOME
 current_state = cfg.Screen.States.STATE_HOME
@@ -97,6 +99,10 @@ while running:
                         previous_state = cfg.Screen.States.STATE_GAME
                         current_state = cfg.Screen.States.STATE_SHOP
 
+                    elif ast.power_img_rect.collidepoint(event.pos):
+                        ast.click.play()
+                        running = False
+
             elif current_state == cfg.Screen.States.STATE_SHOP:
                 if event.button == 1:
                     if ast.back_img_rect.collidepoint(event.pos):
@@ -116,14 +122,24 @@ while running:
                                 if coins >= item["cost"]:
                                     coins -= item["cost"]
                                     cr.save_coins(coins)
-                                    if item["unlock"] == "red_hoop":
+                                    if item["unlock"] == "realistic_hoop":
                                         sk.load_realistic_skin()
+                                        skr.save_skin('realistic skin')
                                     ast.click.play()
 
                                 else:
-                                    pass
+                                    current_state = cfg.Screen.States.STATE_BROKE
+
+            elif current_state == cfg.Screen.States.STATE_BROKE:
+                if event.button == 1:
+                    if ast.back_img_rect.collidepoint(event.pos):
+                        current_state = cfg.Screen.States.STATE_SHOP
 
     if current_state == cfg.Screen.States.STATE_GAME:
+        if skin == 'realistic skin':
+            sk.load_realistic_skin()
+
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
             my_hoop.move_right()
@@ -160,6 +176,8 @@ while running:
                 high_score = score
                 sr.save_high_score(high_score)
 
+        ast.power_img_rect = ast.power.get_rect(topright=(500, 30))
+
         screen.fill(cfg.Screen.SCREEN_BG)
 
         score_text = my_font.render(f'Score: {score}', True, (0, 0, 0))
@@ -171,6 +189,7 @@ while running:
         screen.blit(ast.ball, (my_ball.x, my_ball.y))
         screen.blit(ast.hoop, (my_hoop.x, my_hoop.y))
         screen.blit(ast.shop, ast.shop_img_rect)
+        screen.blit(ast.power, ast.power_img_rect)
 
     elif current_state == cfg.Screen.States.STATE_GAME_OVER:
         menus.draw_game_over(screen, my_font)
@@ -180,6 +199,9 @@ while running:
 
     elif current_state == cfg.Screen.States.STATE_SHOP:
         item_rects, buy_rects = menus.draw_shop(screen, shop_font, my_font)
+
+    elif current_state == cfg.Screen.States.STATE_BROKE:
+        menus.draw_broke(screen, my_font)
 
     pygame.display.flip()
     clock.tick(cfg.Screen.FPS)
